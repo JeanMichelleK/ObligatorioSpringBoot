@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
@@ -22,12 +23,15 @@ public class Paquete {
     
     @Column(nullable = false)
     private LocalDateTime fechaHoraRegistro;
+    @NotBlank
     @Column(nullable = false)
     @Size(max = 25)
     private String nombreDestinatario;
+    @NotBlank
     @Column(nullable = false)
     @Size(max = 25)
     private String direccionDestinatario;
+    @NotBlank
     @Column(nullable = false)
     @Size(max = 9, min = 9)
     private String telefonoDestinatario;
