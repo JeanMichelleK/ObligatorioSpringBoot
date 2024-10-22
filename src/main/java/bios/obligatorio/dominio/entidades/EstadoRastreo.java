@@ -19,6 +19,7 @@ public class EstadoRastreo {
     @Column(nullable = false, length = 40)
     private String descripcion;
     
+    private boolean activo;
     
     public Long getId() {
         return id;
@@ -30,7 +31,16 @@ public class EstadoRastreo {
         this.descripcion = descripcion;
     }
 
-    public EstadoRastreo(String descripcion) {
+    public boolean isActivo(){
+        return activo;
+    }
+
+    public void setActivo(boolean activo){
+        this.activo = activo;
+    }
+
+    public EstadoRastreo(String descripcion, boolean activo) {
         this.descripcion = descripcion;
+        this.activo = activo;
     }
 }

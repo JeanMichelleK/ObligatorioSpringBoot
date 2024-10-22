@@ -7,6 +7,7 @@ import bios.obligatorio.excepciones.ExcepcionObligatorio;
 
 public interface IServicioCategorias {
     List<Categoria> listar(String criterio);
+    List<Categoria> listarT();
     Categoria obtener(Long id);
     void agregar(Categoria categoria) throws ExcepcionObligatorio;
     void modificar(Categoria categoria) throws ExcepcionObligatorio;

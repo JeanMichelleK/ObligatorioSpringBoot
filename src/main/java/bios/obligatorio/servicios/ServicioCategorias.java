@@ -12,6 +12,7 @@ import bios.obligatorio.excepciones.ExcepcionObligatorio;
 import bios.obligatorio.excepciones.ExcepcionTieneVinculos;
 import bios.obligatorio.excepciones.ExcepcionYaExiste;
 import bios.obligatorio.repositorios.IRepositorioCategorias;
+import bios.obligatorio.repositorios.especificaciones.EscpecificacionesCategorias;
 
 @Service
 public class ServicioCategorias implements IServicioCategorias{
@@ -21,6 +22,10 @@ public class ServicioCategorias implements IServicioCategorias{
 
     @Override
     public List<Categoria> listar(String Criterio){
+        return repositorioCategorias.findAll(EscpecificacionesCategorias.buscar(Criterio));
+    }
+    @Override
+    public List<Categoria> listarT(){
         return repositorioCategorias.findAll();
     }
 
