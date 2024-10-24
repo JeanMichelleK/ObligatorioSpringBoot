@@ -1,15 +1,15 @@
 package bios.obligatorio.dominio.entidades;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 
@@ -29,7 +29,7 @@ public class Paquete {
     private String nombreDestinatario;
     @NotBlank
     @Column(nullable = false)
-    @Size(max = 25)
+    @Size(max = 35)
     private String direccionDestinatario;
     @NotBlank
     @Column(nullable = false)
@@ -37,14 +37,14 @@ public class Paquete {
     private String telefonoDestinatario;
     @Column(nullable = false)
     private boolean cobrarAlDestinatario;
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "estado_rastreo_id", nullable = false)
     private EstadoRastreo estadoRastreo;
-    @ManyToOne
-    @JoinColumn(name = "cliente_id", nullable = false)
+    @NotNull
+    @ManyToOne(optional = false)
     private Cliente cliente;
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
     public Long getId() {
         return id;

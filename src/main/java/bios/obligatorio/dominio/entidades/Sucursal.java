@@ -1,12 +1,12 @@
 package bios.obligatorio.dominio.entidades;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "sucursales")
@@ -17,8 +17,8 @@ public class Sucursal {
     private Long id;
 
     @NotBlank
-    @Size(max = 20)
-    @Column(nullable = false, length = 20)
+    @Size(max = 25)
+    @Column(nullable = false, length = 25)
     private String nombre;
 
     public Long getId() {

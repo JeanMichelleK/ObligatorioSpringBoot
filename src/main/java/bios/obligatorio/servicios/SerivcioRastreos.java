@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import bios.obligatorio.dominio.entidades.EstadoRastreo;
+import bios.obligatorio.dominio.entidades.Paquete;
 import bios.obligatorio.excepciones.ExcepcionNoExiste;
 import bios.obligatorio.excepciones.ExcepcionObligatorio;
 import bios.obligatorio.excepciones.ExcepcionYaExiste;
@@ -56,12 +57,12 @@ public class SerivcioRastreos implements IServicioRastreos {
         if(estadoRastreo == null){
             throw new ExcepcionNoExiste("Ese rastreo no existe.");
         }
-        boolean tienePaquetes = repositorioPaquetes.existsByEstadoRastreo(estadoRastreo);
-        if(tienePaquetes){
+       List<Paquete> paquetes = repositorioPaquetes.findByEstadoRastreo_Id(id);
+        if(paquetes.size() == 0){
+            repositorioEstadoRastreos.deleteById(id);
+        } else {
             estadoRastreo.setActivo(false);
             repositorioEstadoRastreos.save(estadoRastreo);
-        } else {
-            repositorioEstadoRastreos.deleteById(id);
         }
     }
 }

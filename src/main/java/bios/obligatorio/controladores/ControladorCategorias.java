@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import bios.obligatorio.dominio.entidades.Categoria;
 import bios.obligatorio.excepciones.ExcepcionObligatorio;
 import bios.obligatorio.servicios.IServicioCategorias;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/categorias")

@@ -18,7 +18,7 @@ import bios.obligatorio.dominio.entidades.Paquete;
 import bios.obligatorio.excepciones.ExcepcionObligatorio;
 import bios.obligatorio.servicios.IServicioCategorias;
 import bios.obligatorio.servicios.IServicioPaquetes;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/paquetes")

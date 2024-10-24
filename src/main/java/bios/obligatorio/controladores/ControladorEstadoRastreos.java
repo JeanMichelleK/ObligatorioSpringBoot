@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import bios.obligatorio.dominio.entidades.EstadoRastreo;
 import bios.obligatorio.excepciones.ExcepcionObligatorio;
 import bios.obligatorio.servicios.IServicioRastreos;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/rastreos")

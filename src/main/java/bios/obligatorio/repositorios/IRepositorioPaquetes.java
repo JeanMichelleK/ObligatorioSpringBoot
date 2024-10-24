@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
 
-import bios.obligatorio.dominio.entidades.EstadoRastreo;
 import bios.obligatorio.dominio.entidades.Paquete;
 
 public interface IRepositorioPaquetes extends JpaRepository<Paquete,Long>, JpaSpecificationExecutor<Paquete> {
@@ -21,5 +20,7 @@ public interface IRepositorioPaquetes extends JpaRepository<Paquete,Long>, JpaSp
     @EntityGraph(type = EntityGraphType.LOAD, attributePaths = { "categorias", "estadorastreos", "clientes"})
     Optional<Paquete> findById(Long id);
     
-    boolean existsByEstadoRastreo(EstadoRastreo estadoRastreo);
+    @EntityGraph(type = EntityGraphType.LOAD, attributePaths = { "categorias", "estadorastreos", "clientes"})
+    List<Paquete> findByEstadoRastreo_Id(Long id);
+    
 }
