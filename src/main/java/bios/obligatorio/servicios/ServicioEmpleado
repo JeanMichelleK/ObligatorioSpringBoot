@@ -1,0 +1,81 @@
+
+
+
+
+@Service
+public class ServicioEmpleados implements IServicioEmpleados {
+
+    @Autowired
+    private IRepositorioEmpleados repositorioEmpleados;
+
+    @Autowired
+    private IRepositorioClientes repositorioClientes;
+
+    @Override
+    public List<Empleado> buscar(String criterio) {
+        return repositorioEmpleados.findAll(EspecificacionesEmpleado.buscar(criterio));
+    }
+
+    @Override
+    public Empleado obtener(String nombreUsuario) {
+        return repositorioEmpleados.findById(nombreUsuario).orElse(null);
+    }
+
+    @Override
+    public void agregar(Empleado empleado)
+            throws ExepcionObligatorio {
+        empleado.setActivo(true);
+
+        Usuario usuarioExistente = repositorioEmpleados.findById(empleado.getNombreUsuario()).orElse(null);
+
+        if (usuarioExistente == null) {
+            usuarioExistente = repositorioClientes.findById(empleado.getNombreUsuario()).orElse(null);
+        }
+
+        if (usuarioExistente != null) {
+            throw new ExcepcionYaExiste("El usuario ya existe.");
+        }
+
+        empleado.getRoles().add(new Rol("empleado"));
+
+        empleado.getLegajo().setEmpleado(empleado);
+
+        repositorioEmpleados.save(empleado);
+    }
+
+    @Override
+    public void modificar(Empleado empleado)
+            throws ExepcionObligatorio {
+        empleado.setActivo(true);
+
+        Empleado empleadoExistente = repositorioEmpleados.findById(empleado.getNombreUsuario()).orElse(null);
+
+        if (empleadoExistente == null) {
+            throw new ExcepcionNoExiste("El empleado no existe.");
+        }
+
+        empleado.getRoles().clear();
+
+        for (Rol r : empleadoExistente.getRoles()) {
+            empleado.getRoles().add(r);
+        }
+
+        empleado.getSucursal().setNumero(empleadoExistente.getSucursal().getId());
+        empleado.getSucursal().setEmpleado(empleado);
+
+        repositorioEmpleados.save(empleado);
+    }
+
+    @Override
+    public void eliminar(String nombreUsuario)
+            throws ExepcionObligatorio {
+        Empleado empleadoExistente = repositorioEmpleados.findById(nombreUsuario).orElse(null);
+
+        if (empleadoExistente == null) {
+            throw new ExcepcionNoExiste("El empleado no existe.");
+        }
+
+        repositorioEmpleados.deleteById(nombreUsuario);
+    }
+
+}

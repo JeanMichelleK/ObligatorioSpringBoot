@@ -1,0 +1,15 @@
+package uy.edu.bios.casosdeestudio.localcomidarapida.servicios;
+
+import java.util.List;
+import src.main.java.bios.obligatorio.excepciones.ExcepcionObligatorio.java;
+
+
+public interface IServicioEmpleados {
+
+    List<Empleado> buscar(String criterio);
+    Empleado obtener(String nombreUsuario);
+    void agregar(Empleado empleado) throws ExepcionObligatorio;
+    void modificar(Empleado empleado) throws ExepcionObligatorio;
+    void eliminar(String nombreUsuario) throws ExepcionObligatorio;
+
+}

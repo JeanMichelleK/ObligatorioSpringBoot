@@ -1,0 +1,134 @@
+
+
+
+@Controller
+@RequestMapping("/empleados")
+public class ControladorEmpleados {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private IServicioEmpleados servicioEmpleados;
+
+    @GetMapping
+    public String mostrarIndex(@RequestParam(required = false) String criterio, Model model) {
+        List<Empleado> empleados = servicioEmpleados.buscar(criterio);
+
+        model.addAttribute("empleados", empleados);
+
+        return "empleados/index";
+    }
+
+    @GetMapping("/agregar")
+    public String mostrarAgregar(@ModelAttribute Empleado empleado) {
+        return "empleados/agregar";
+    }
+
+    @PostMapping("/agregar")
+    public String procesarAgregar(@ModelAttribute @Valid Empleado empleado, BindingResult result, Model model, RedirectAttributes attributes) {
+        if (result.hasErrors()) {
+            return "empleados/agregar";
+        }
+
+        try {
+            empleado.setContrasena(passwordEncoder.encode(empleado.getContrasena()));
+
+            servicioEmpleados.agregar(empleado);
+
+            attributes.addFlashAttribute("mensaje", "Empleado agregado con éxito.");
+
+            return "redirect:/empleados";
+        } catch (ExcepcionObligatorio e) {
+            model.addAttribute("mensaje", "¡ERROR! " + e.getMessage());
+
+            return "empleados/agregar";
+        }
+    }
+
+    @GetMapping("/{nombreUsuario}")
+    public String mostrarDetalle(@PathVariable("nombreUsuario") String nombreUsuario, Model model) {
+        Empleado empleado = servicioEmpleados.obtener(nombreUsuario);
+
+        if (empleado != null) {
+            model.addAttribute("empleado", empleado);
+        } else {
+            model.addAttribute("mensaje", "¡ERROR! No se encontró el empleado con el nombre de usuario " + nombreUsuario + ".");
+        }
+
+        return "empleados/detalle";
+    }
+
+    @GetMapping("/modificar")
+    public String mostrarModificar(String nombreUsuario, Model model) {
+        Empleado empleado = servicioEmpleados.obtener(nombreUsuario);
+
+        if (empleado != null) {
+            model.addAttribute("empleado", empleado);
+            model.addAttribute("contrasenaFalsa", UUID.randomUUID().toString());
+        } else {
+            model.addAttribute("mensaje", "¡ERROR! No se encontró el empleado con el nombre de usuario " + nombreUsuario + ".");
+        }
+
+        return "empleados/modificar";
+    }
+
+    @PostMapping("/modificar")
+    public String procesarModificar(@ModelAttribute @Valid Empleado empleado, BindingResult result, String contrasenaFalsa, Model model, RedirectAttributes attributes) {
+        if (result.hasErrors()) {
+            model.addAttribute("contrasenaFalsa", UUID.randomUUID().toString());
+
+            return "empleados/modificar";
+        }
+
+        Empleado empleadoEnBD = servicioEmpleados.obtener(empleado.getNombreUsuario());
+
+        try {
+            if (contrasenaFalsa.equals(empleado.getContrasena())) {
+                empleado.setContrasena(empleadoEnBD.getContrasena());
+            } else {
+                empleado.setContrasena(passwordEncoder.encode(empleado.getContrasena()));
+            }
+
+            servicioEmpleados.modificar(empleado);
+
+            attributes.addFlashAttribute("mensaje", "Empleado modificado con éxito.");
+
+            return "redirect:/empleados";
+        } catch (ExepcionObligatorio e) {
+            model.addAttribute("mensaje", "¡ERROR! " + e.getMessage());
+
+            return "empleados/modificar";
+        }
+    }
+
+    @GetMapping("/eliminar")
+    public String mostrarEliminar(String nombreUsuario, Model model) {
+        Empleado empleado = servicioEmpleados.obtener(nombreUsuario);
+
+        if (empleado != null) {
+            model.addAttribute("empleado", empleado);
+        } else {
+            model.addAttribute("mensaje", "¡ERROR! No se encontró el empleado con el nombre de usuario " + nombreUsuario + ".");
+        }
+
+        return "empleados/eliminar";
+    }
+
+    @PostMapping("/eliminar")
+    public String procesarEliminar(String nombreUsuario, Model model, RedirectAttributes attributes) {
+        try {
+            servicioEmpleados.eliminar(nombreUsuario);
+
+            attributes.addFlashAttribute("mensaje", "Empleado eliminado con éxito.");
+
+            return "redirect:/empleados";
+        } catch (ExepcionObligatorio e) {
+            model.addAttribute("mensaje", "¡ERROR! " + e.getMessage());
+
+            return "empleados/eliminar";
+        }
+    }
+
+
+}
